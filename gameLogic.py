@@ -1,6 +1,7 @@
 import saves
 import asyncio
 from time import time
+import asyncHandling
 
 class World:
     def __init__(self, jsonDict):
@@ -23,10 +24,21 @@ class GameHandler:
     def __init__(self, saveFilename):
         self.world = World(saves.load(saveFilename, defaultSave))
         self.lastTick = time()
-        self.inputQueue = asyncio.Queue()
-        self.input = self.inputQueue.put_nowait
+        self.asyncHandler = asyncHandling.handler(self.tick, self.handleInput)
+        self.input = self.asyncHandler.inputQueue.put_nowait
+        self.running = True
     
+    def run(self):
+        asyncio.run(self.main())
+
     def tick(self):
         startTime = time()
         deltaT=startTime-self.lastTick
         self.lastTick = startTime
+    
+    def handleInput(self, command):
+        match command:
+            case ["close"]:
+                self.running = False
+            case _:
+                pass
