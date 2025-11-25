@@ -1,4 +1,6 @@
 import saves
+import asyncio
+from time import time
 
 class World:
     def __init__(self, jsonDict):
@@ -17,5 +19,12 @@ defaultSave = {
     }
 }
 
-def initialise(saveFilename):
-    world = World(saves.load(saveFilename, defaultSave))
+class GameHandler:
+    def __init__(self, saveFilename):
+        self.world = World(saves.load(saveFilename, defaultSave))
+        self.lastTick = time()
+    
+    def tick(self):
+        startTime = time()
+        deltaT=startTime-self.lastTick
+        self.lastTick = startTime
