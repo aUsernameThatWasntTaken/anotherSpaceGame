@@ -1,6 +1,7 @@
 import asyncio
 
 class handler:
+    """Handles the input Queue and tick loop to allow input while the game runs."""
     def __init__(self, tickFunc, handleInput):
         self.tick = tickFunc
         self.handleInput = handleInput

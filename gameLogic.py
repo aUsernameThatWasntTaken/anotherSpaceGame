@@ -21,6 +21,7 @@ defaultSave = {
 }
 
 class GameHandler:
+    """Contains code to handle commands and to init the asyncHandler"""
     def __init__(self, saveFilename):
         self.world = World(saves.load(saveFilename, defaultSave))
         self.lastTick = time()
@@ -29,7 +30,7 @@ class GameHandler:
         self.running = True
     
     def run(self):
-        asyncio.run(self.main())
+        asyncio.run(self.asyncHandler.main())
 
     def tick(self):
         startTime = time()
