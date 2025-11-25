@@ -36,9 +36,14 @@ class GameHandler:
         deltaT=startTime-self.lastTick
         self.lastTick = startTime
     
+    def launchRocket(self):
+        pass # I have not thought this game through at all, and yet here I am: possibly closer that I have ever been to completion
+
     def handleInput(self, command):
         match command:
             case ["close"]:
                 self.running = False
+            case ["launch"]:
+                self.launchRocket()
             case _:
                 pass
