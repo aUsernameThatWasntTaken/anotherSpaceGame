@@ -11,8 +11,9 @@ class handler:
         tick_task = asyncio.create_task(self._tick_loop(1.0))
         try:
             while True:
-                pass
                 #handle input
+                command = await self.inputQueue.get()
+                self.handleInput(command)
         finally:#execute no matter what to allow cleanup
             tick_task.cancel()
             try:
