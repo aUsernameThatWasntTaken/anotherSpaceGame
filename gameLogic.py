@@ -23,6 +23,8 @@ class GameHandler:
     def __init__(self, saveFilename):
         self.world = World(saves.load(saveFilename, defaultSave))
         self.lastTick = time()
+        self.inputQueue = asyncio.Queue()
+        self.input = self.inputQueue.put_nowait
     
     def tick(self):
         startTime = time()
