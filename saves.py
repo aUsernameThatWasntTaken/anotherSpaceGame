@@ -8,16 +8,13 @@ class World:
         self.infrastructure = jsonDict["infrastructure"]
         self.vABSpeed = sum([item["level"] for item in self.infrastructure["earth"] if item["type"]=="VAB"])
 
-def load(fileName):
-    with open(fileName) as f:
-        return json.load(f)
-
 def getWorld(saveFileName, defaultSave):
     if saveFileName == "None":
         return World(defaultSave)
     else:
         try:
-            return World(load(saveFileName+".json"))
+            with open(saveFileName+".json") as f:
+                return World(json.load(f))
         except json.JSONDecodeError:
             print("Save File corrupted or incompatible, starting new save")
             return World(defaultSave)
