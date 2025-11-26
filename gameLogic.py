@@ -38,6 +38,19 @@ class GameHandler:
         self.input = self.asyncHandler.inputQueue.put_nowait
         self.running = True
     
+    def __enter__(self):
+        self.mainTask = asyncio.create_task(self.asyncHandler.main())
+    
+    def __exit__(self, exc_type, exc_value, exc_trace):
+        asyncio.run(self.asyncExit())
+    
+    async def asyncExit(self):
+        self.mainTask.cancel()
+        try:
+            await self.mainTask
+        except asyncio.CancelledError:
+            pass
+
     def run(self):
         asyncio.run(self.asyncHandler.main())
 
@@ -53,8 +66,6 @@ class GameHandler:
 
     def handleInput(self, command):
         match command:
-            case ["close"]:
-                self.running = False
             case ["launch"]:
                 self.launchRocket()
             case _:
