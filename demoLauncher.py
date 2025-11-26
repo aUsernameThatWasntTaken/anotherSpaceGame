@@ -9,5 +9,12 @@ while True:
     else:
         break
 
-with handler as gh:
+isRunning = True
+
+def updateGUI(gameHandler):
     pass
+
+def getIsRunning():
+    return isRunning
+
+handler.run(updateGUI, getIsRunning)

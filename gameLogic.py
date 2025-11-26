@@ -30,20 +30,12 @@ class GameHandler:
         self.lastTick = time()
         self.asyncHandler = asyncHandling.handler(self.tick, self.handleInput)
         self.input = self.asyncHandler.inputQueue.put_nowait
-        self.running = True
+        self.isRunning = lambda: False
     
-    def __enter__(self):
-        self.mainTask = asyncio.create_task(self.asyncHandler.main())
-    
-    def __exit__(self, exc_type, exc_value, exc_trace):
-        asyncio.run(self.asyncExit())
-    
-    async def asyncExit(self):
-        self.mainTask.cancel()
-        try:
-            await self.mainTask
-        except asyncio.CancelledError:
-            pass
+    def run(self, updateGUI, isRunning):
+        self.updateGUI = updateGUI
+        self.isRunning = isRunning
+        asyncio.run(self.asyncHandler.main())
 
     def tick(self):
         startTime = time()
