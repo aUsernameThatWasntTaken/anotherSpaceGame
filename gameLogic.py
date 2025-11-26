@@ -5,28 +5,10 @@ from time import time
 import asyncHandling
 
 
-
-defaultSave = {
-    "money":1_000_000,
-    "infrastructure":{
-        "earth":[
-            {"type":"VAB", "level":1},
-            {"type":"launchPad","level":1}
-            ]
-    }
-}
-
-class Rockets(Enum):
-    suborbital = 0 
-
-# in seconds with one Lvl1 VAB:
-rocketBuildTime = {Rockets.suborbital:10}
-
 class GameHandler:
     """Contains code to handle commands and to init the asyncHandler"""
     def __init__(self, saveFilename):
-        self.world = saves.getWorld(saveFilename, defaultSave)
-        self.selectedRocket = Rockets.suborbital
+        self.world = saves.getWorld(saveFilename)
         self.lastTick = time()
         self.asyncHandler = asyncHandling.handler(self.tick, self.handleInput)
         self.input = self.asyncHandler.inputQueue.put_nowait
@@ -38,12 +20,13 @@ class GameHandler:
         asyncio.run(self.asyncHandler.main())
 
     def tick(self):
+        #will handle things like passive income
         startTime = time()
         deltaT=startTime-self.lastTick
         self.lastTick = startTime
     
     async def launchRocket(self):
-        await asyncio.sleep(rocketBuildTime[self.selectedRocket]/self.world.vABSpeed)
+        await asyncio.sleep(self.world.rocketBuildTime)
         await asyncio.sleep(10)
         print("rocket launched")
 

@@ -1,5 +1,16 @@
 import json
 
+
+defaultSave = {
+    "money":1_000_000,
+    "infrastructure":{
+        "earth":[
+            {"type":"VAB", "level":1},
+            {"type":"launchPad","level":1}
+            ]
+    }
+}
+
 class World:
     def __init__(self, jsonDict):
         self.money = int(jsonDict["money"]) # casting value for myPy to accept typing
@@ -7,8 +18,10 @@ class World:
         # self.infrastructure = dict([(body, [structure for structure in structures]) for body,structures in jsonDict["infrastructure"].items()])
         self.infrastructure = jsonDict["infrastructure"]
         self.vABSpeed = sum([item["level"] for item in self.infrastructure["earth"] if item["type"]=="VAB"])
+        # in seconds with one Lvl1 VAB:
+        rocketBuildTime = 10
 
-def getWorld(saveFileName, defaultSave):
+def getWorld(saveFileName):
     if saveFileName == "None":
         return World(defaultSave)
     else:
