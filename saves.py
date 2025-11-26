@@ -5,10 +5,8 @@ from WorldClass import World
 defaultSave = {
     "money":1_000_000,
     "infrastructure":{
-        "earth":[
-            {"type":"VAB", "level":1},
-            {"type":"launchPad","level":1}
-            ]
+        "VAB":1,
+        "Launchpads":1
     }
 }
 
