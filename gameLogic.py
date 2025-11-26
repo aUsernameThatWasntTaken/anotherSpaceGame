@@ -32,7 +32,10 @@ class GameHandler:
     """Contains code to handle commands and to init the asyncHandler"""
     def __init__(self, saveFilename):
         self.selectedRocket = Rockets.suborbital
-        self.world = World(saves.load(saveFilename+".json", defaultSave))
+        if saveFilename == "None":
+            self.world = World(defaultSave)
+        else:
+            self.world = World(saves.load(saveFilename+".json", defaultSave))
         self.lastTick = time()
         self.asyncHandler = asyncHandling.handler(self.tick, self.handleInput)
         self.input = self.asyncHandler.inputQueue.put_nowait
