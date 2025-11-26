@@ -51,9 +51,6 @@ class GameHandler:
         except asyncio.CancelledError:
             pass
 
-    def run(self):
-        asyncio.run(self.asyncHandler.main())
-
     def tick(self):
         startTime = time()
         deltaT=startTime-self.lastTick
