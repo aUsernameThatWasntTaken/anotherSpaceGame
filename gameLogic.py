@@ -25,12 +25,10 @@ class GameHandler:
         deltaT=startTime-self.lastTick
         self.lastTick = startTime
     
-    async def launchRocket(self):
+    def launchRocket(self):
         self.world.buildRocket()
-        await asyncio.sleep(10)
-        print("rocket launched")
 
-    def handleInput(self, command):
+    def handleInput(self, command):#to be deleted, I think.
         match command:
             case ["launch"]:
                 self.launchRocket()
