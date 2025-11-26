@@ -9,16 +9,16 @@ class handler:
 
     async def main(self): # try blocks by chatgpt
         """starts gameloop and handles input"""
-        tick_task = asyncio.create_task(self._tick_loop(1.0))
+        tickTask = asyncio.create_task(self._tick_loop(1.0))
         try:
             while True:
                 #handle input
                 command = await self.inputQueue.get()
                 self.handleInput(command)
         finally:#execute no matter what to allow cleanup
-            tick_task.cancel()
+            tickTask.cancel()
             try:
-                await tick_task
+                await tickTask
             except asyncio.CancelledError:
                 pass
 
