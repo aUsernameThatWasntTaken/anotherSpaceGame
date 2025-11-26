@@ -1,4 +1,5 @@
 import json
+from asyncio import Queue
 
 
 defaultSave = {
@@ -19,7 +20,14 @@ class World:
         self.infrastructure = jsonDict["infrastructure"]
         self.vABSpeed = sum([item["level"] for item in self.infrastructure["earth"] if item["type"]=="VAB"])
         # in seconds with one Lvl1 VAB:
-        rocketBuildTime = 10
+        self.rocketBuildTime = 10
+        self.rocketCost = 1000
+        self.rocketBuildQueue = Queue()
+        self.rocketLaunchQueue = Queue()
+    
+    def buildRocket(self):
+        self.rocketBuildQueue.put("rocket")
+        self.money -= self.rocketCost
 
 def getWorld(saveFileName):
     if saveFileName == "None":

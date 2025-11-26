@@ -26,7 +26,7 @@ class GameHandler:
         self.lastTick = startTime
     
     async def launchRocket(self):
-        await asyncio.sleep(self.world.rocketBuildTime)
+        self.world.buildRocket()
         await asyncio.sleep(10)
         print("rocket launched")
 
