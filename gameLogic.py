@@ -14,9 +14,8 @@ class GameHandler:
         self.input = self.asyncHandler.inputQueue.put_nowait
         self.isRunning = lambda: False
     
-    def run(self, updateGUI, isRunning):
-        self.updateGUI = updateGUI
-        self.isRunning = isRunning
+    def run(self, GUIobject):
+        self.updateGUI = GUIobject.update()
         asyncio.run(self.asyncHandler.main())
 
     def tick(self):

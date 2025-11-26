@@ -1,4 +1,8 @@
 from gameLogic import GameHandler
+import tkinter
+
+root = tkinter.Tk()
+root.title("Rocket Clicker (to be renamed) Demo")
 
 while True:
     fileName = input("Save file name (do not include file extension): ")
@@ -10,11 +14,15 @@ while True:
         break
 
 isRunning = True
+class GUI:
+    def __init__(self, gameHandler: GameHandler):
+        tkinter.Label(root, text="Welcome to rocket Clicker (to be renamed)").grid(row=0,column=0)
+        tkinter.Button(root, text="build and launch rocket", command=lambda: gameHandler.launchRocket).grid(row=1,column=0)
+        moneyStringVar = tkinter.StringVar(root, "Money:")
+        tkinter.Label(root, textvariable=moneyStringVar).grid(row=2,column=0)
+        #TODO: continue:
 
-def updateGUI(gameHandler):
-    pass
+    def updateGUI(self, gameHandler: GameHandler):
+        pass
 
-def getIsRunning():
-    return isRunning
-
-handler.run(updateGUI, getIsRunning)
+handler.run(GUI)
