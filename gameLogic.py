@@ -25,7 +25,7 @@ rocketBuildTime = {Rockets.suborbital:10}
 class GameHandler:
     """Contains code to handle commands and to init the asyncHandler"""
     def __init__(self, saveFilename):
-        self.world = saves.getWorld(saveFilename)
+        self.world = saves.getWorld(saveFilename, defaultSave)
         self.selectedRocket = Rockets.suborbital
         self.lastTick = time()
         self.asyncHandler = asyncHandling.handler(self.tick, self.handleInput)
