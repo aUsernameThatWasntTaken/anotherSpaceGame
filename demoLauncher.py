@@ -18,10 +18,10 @@ class GUI:
     def __init__(self, gameHandler: GameHandler):
         tkinter.Label(root, text="Welcome to rocket Clicker (to be renamed)").grid(row=0,column=0)
         tkinter.Button(root, text="build and launch rocket", command=lambda: gameHandler.launchRocket).grid(row=1,column=0)
-        moneyStringVar = tkinter.StringVar(root, "Money:")
-        tkinter.Label(root, textvariable=moneyStringVar).grid(row=2,column=0)
-        launchComplexStatsVar = tkinter.StringVar(root, "Launch complex stats:")
-        tkinter.Label(root, textvariable=launchComplexStatsVar).grid(row=3,column=0)
+        self.moneyStringVar = tkinter.StringVar(root, "Money:")
+        tkinter.Label(root, textvariable=self.moneyStringVar).grid(row=2,column=0)
+        self.launchComplexStatsVar = tkinter.StringVar(root, "Launch complex stats:")
+        tkinter.Label(root, textvariable=self.launchComplexStatsVar).grid(row=3,column=0)
         #TODO: continue:
 
     def updateGUI(self, gameHandler: GameHandler):
