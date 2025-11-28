@@ -1,6 +1,7 @@
 import pygame
 import pygame_gui
 import os
+from BackendCode.gameLogic import GameHandler, StopGame
 
 SCREEN_W = 1280
 SCREEN_H = 720

@@ -1,5 +1,5 @@
 import json
-from WorldClass import World
+from BackendCode.WorldClass import World
 
 
 defaultSave = {
