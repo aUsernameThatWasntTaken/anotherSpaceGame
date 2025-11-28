@@ -37,10 +37,3 @@ class GameHandler:
     
     def launchRocket(self):
         self.world.buildRocket()
-
-    def handleInput(self, command):#to be deleted, I think.
-        match command:
-            case ["launch"]:
-                self.launchRocket()
-            case _:
-                pass
