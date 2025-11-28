@@ -1,0 +1,86 @@
+{
+    "button":
+    {
+        "colours":
+        {
+            "normal_border": "White",
+            "normal_bg": "#699ff5",
+            "normal_text": "White",
+            "hovered_bg": "#4787ed",
+            "hovered_text": "White",
+            "hovered_border": "White",
+            "selected_bg": "#3b6fcc",
+            "selected_text": "White",
+            "selected_border": "White",
+            "active_bg": "#2d5bb3",
+            "active_text": "White",
+            "active_border": "White"
+        },
+        "misc":
+        {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "25",
+            "border_width": "2"
+        },
+        "font":
+        {
+           "name": "Space Mono",
+           "size": "20",
+           "bold": "0",
+           "italic": "0",
+           "regular_path": "Themes/Fonts/reg.ttf",
+           "bold_path": "Themes/Fonts/bold.ttf"
+        }
+    },
+    "#payload_btn": {
+        "colours":
+        {
+            "normal_border": "White",
+            "normal_bg": "#00C853",
+            "normal_text": "White",
+            "hovered_bg": "#00A843",
+            "hovered_text": "White",
+            "hovered_border": "White",
+            "selected_bg": "#008C36",
+            "selected_text": "White",
+            "selected_border": "White",
+            "active_bg": "#00752D",
+            "active_text": "White",
+            "active_border": "White"
+        }
+    },
+    "#build_btn": {
+        "colours":
+        {
+            "normal_border": "White",
+            "normal_bg": "#FFD700",
+            "normal_text": "White",
+            "hovered_bg": "#FFC700",
+            "hovered_text": "White",
+            "hovered_border": "White",
+            "selected_bg": "#F0B800",
+            "selected_text": "White",
+            "selected_border": "White",
+            "active_bg": "#D9A500",
+            "active_text": "White",
+            "active_border": "White"
+        }
+    },
+    "#research_btn": {
+        "colours":
+        {
+            "normal_border": "White",
+            "normal_bg": "#00CED1",
+            "normal_text": "White",
+            "hovered_bg": "#00B8BA",
+            "hovered_text": "White",
+            "hovered_border": "White",
+            "selected_bg": "#009FA1",
+            "selected_text": "White",
+            "selected_border": "White",
+            "active_bg": "#008688",
+            "active_text": "White",
+            "active_border": "White"
+        }
+    }
+}
