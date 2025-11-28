@@ -1,5 +1,5 @@
 import asyncio
-
+from BackendCode.errors import StopGame
 class handler:
     """Handles the input Queue and tick loop to allow input while the game runs."""
     def __init__(self, tickFunc, handleInput):
@@ -30,4 +30,6 @@ class handler:
                 await asyncio.sleep(interval)
         except asyncio.CancelledError:
             # clean shutdown if cancelled
+            return
+        except StopGame:
             return

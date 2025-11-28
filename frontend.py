@@ -1,7 +1,8 @@
 import pygame
 import pygame_gui
 import os
-from BackendCode.gameLogic import GameHandler, StopGame
+from BackendCode.gameLogic import GameHandler
+from BackendCode.errors import StopGame
 
 SCREEN_W = 1280
 SCREEN_H = 720
@@ -30,25 +31,41 @@ def centered_rect(center_x_scale, center_y_scale, width_scale, height_scale):
     top_left_y = center_y - height/2
     
     return pygame.Rect((top_left_x, top_left_y), (width, height))
+class GUIhandler: #rename if you want
+    def __init__(self, gameHandler: GameHandler):
+        # UI
+        launch_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.15, 0.9, 0.2, 0.1),
+                                                    text='PREPARE PAYLOAD',
+                                                    manager=manager)
 
-# UI
-launch_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.15, 0.9, 0.2, 0.1),
-                                             text='PREPARE PAYLOAD',
-                                             manager=manager)
+        # bottom right buttons in a horizontal line
+        build_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.75, 0.9, 0.1, 0.1),
+                                                    text='BUILD',
+                                                    manager=manager,
+                                                    object_id='#build_btn')
+        research_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.875, 0.9, 0.1, 0.1),
+                                                    text='RESEARCH',
+                                                    manager=manager,
+                                                    object_id='#research_btn')
+        payload_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.625, 0.9, 0.1, 0.1),
+                                                    text='CIV',
+                                                    manager=manager,
+                                                    object_id='#payload_btn')
 
-# bottom right buttons in a horizontal line
-build_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.75, 0.9, 0.1, 0.1),
-                                            text='BUILD',
-                                            manager=manager,
-                                            object_id='#build_btn')
-research_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.875, 0.9, 0.1, 0.1),
-                                               text='RESEARCH',
-                                               manager=manager,
-                                               object_id='#research_btn')
-payload_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.625, 0.9, 0.1, 0.1),
-                                             text='CIV',
-                                             manager=manager,
-                                             object_id='#payload_btn')
+    def update(self, gameHandler: GameHandler, dt):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise StopGame()
+            
+            manager.process_events(event)
+        
+        manager.update(dt)
+        manager.draw_ui(screen)
+        pygame.display.update()
+
+saveFile = "None"
+GameHandler(saveFile).run(GUIhandler)
 
 # things we need
 
@@ -56,19 +73,3 @@ payload_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.625,
 # tech tree & research
 # cargo selection (COMMERCIAL/SCIENTIFIC/SPACESHIP)
 # money!
-
-clock = pygame.time.Clock()
-
-while running:
-    dt = clock.tick(60)/1000
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        
-        manager.process_events(event)
-    
-    manager.update(dt)
-    manager.draw_ui(screen)
-    pygame.display.update()
-
-pygame.quit()

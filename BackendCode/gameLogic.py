@@ -11,9 +11,9 @@ import BackendCode.asyncHandling as asyncHandling
 import BackendCode.saves as saves
 
 
-class StopGame(RuntimeError):
-    def __init__(self):
-        pass
+class GUIhandler(Protocol):
+    def __init__(self, gameHandler: GameHandler): ...
+    def update(self, gameHandler: GameHandler, deltaTime): ...
 
 class GameHandler:
     """Contains code to handle commands and to init the asyncHandler"""
@@ -24,15 +24,16 @@ class GameHandler:
         self.input = self.asyncHandler.inputQueue.put_nowait
         self.isRunning = lambda: False
     
-    def run(self, GUIobject):
-        self.updateGUI = GUIobject.update()
+    def run(self, GUIClass: Type[GUIhandler]):
+        self.GUI = GUIClass(self)
         asyncio.run(self.asyncHandler.main())
 
     def tick(self):
-        #will handle things like passive income
+        #will handle things like passive income and GUI
         startTime = time()
         deltaT=startTime-self.lastTick
         self.lastTick = startTime
+        self.GUI.update(self, deltaT)
     
     def launchRocket(self):
         self.world.buildRocket()
