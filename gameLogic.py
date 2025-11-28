@@ -4,6 +4,9 @@ import asyncio
 from time import time
 import asyncHandling
 
+class StopGame(RuntimeError):
+    def __init__(self):
+        pass
 
 class GameHandler:
     """Contains code to handle commands and to init the asyncHandler"""
