@@ -23,6 +23,10 @@ class GameHandler:
         self.asyncHandler = asyncHandling.handler(self.tick, self.handleInput)
         self.input = self.asyncHandler.inputQueue.put_nowait
         self.isRunning = lambda: False
+        self.payloadFuncs = {
+            "com":self.queueComPayload,
+            "sci":self.queueSciPayload
+        }
     
     def run(self, GUIClass: Type[GUIhandler]):
         self.GUI = GUIClass(self)
@@ -37,3 +41,10 @@ class GameHandler:
     
     def launchRocket(self):
         self.world.buildRocket()
+    
+    def queueComPayload(self):
+        self.world.payloadQueue.put("commercial")
+    
+    def queueSciPayload(self):
+        self.world.money -= 100
+        self.world.payloadQueue.put("scientific")

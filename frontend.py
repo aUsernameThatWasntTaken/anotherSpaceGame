@@ -33,11 +33,14 @@ def centered_rect(center_x_scale, center_y_scale, width_scale, height_scale):
     return pygame.Rect((top_left_x, top_left_y), (width, height))
 class GUIhandler: #rename if you want
     def __init__(self, gameHandler: GameHandler):
+        self.selectedPayload = "com"
+        def preparePayload():
+            gameHandler.payloadFuncs[self.selectedPayload]() #gets function for selected payload and calls it
         # UI
-        launch_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.15, 0.9, 0.2, 0.1),
-                                                    text='PREPARE PAYLOAD',
-                                                    manager=manager)
-
+        prepare_payload_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.15, 0.9, 0.2, 0.1),
+                                                                text='PREPARE PAYLOAD',
+                                                                manager=manager,
+                                                                command=preparePayload)
         # bottom right buttons in a horizontal line
         build_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.75, 0.9, 0.1, 0.1),
                                                     text='BUILD',
