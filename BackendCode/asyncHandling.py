@@ -9,7 +9,7 @@ class handler:
 
     async def main(self): # try blocks by chatgpt
         """starts gameloop and handles input"""
-        tickTask = asyncio.create_task(self._tick_loop(1.0))
+        tickTask = asyncio.create_task(self._tick_loop(1/60)) # chatGPT set it to 1, I had to change it
         try:
             while True:
                 #handle input
