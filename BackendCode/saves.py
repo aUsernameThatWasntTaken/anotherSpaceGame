@@ -7,7 +7,8 @@ defaultSave = {
     "infrastructure":{
         "VAB":1,
         "Launchpads":1
-    }
+    },
+    "unlocks":{"rocketSize":0}
 }
 
 def getWorld(saveFileName):

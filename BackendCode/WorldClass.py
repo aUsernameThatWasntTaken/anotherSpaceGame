@@ -6,7 +6,7 @@ class PadStats:
         self.launching = 0
         self.awaitingRocket = 0
         self.awaitingPayload = 0
-    def __dict__(self):
+    def getDict(self):
         return {
             "awaitingRocket":self.awaitingRocket,
             "awaitingPayload":self.awaitingPayload,
@@ -35,7 +35,7 @@ class World:
     
     def getStats(self):
         return {"money":self.money,
-                "pads":dict(self.padStats),
+                "pads":self.padStats.getDict(),
                 "queues":self.queues.getLengths()}
     
     def readWorldData(self, jsonDict):
