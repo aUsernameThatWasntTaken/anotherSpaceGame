@@ -7,12 +7,12 @@ class World:
         self.rocketBuildQueue = asyncio.Queue()
         self.rocketLaunchQueue = asyncio.Queue()
         self.payloadQueue = asyncio.Queue()
+        self.readWorldData(jsonDict)
     
     def readWorldData(self, jsonDict):
         self.money = int(jsonDict["money"]) # casting value for myPy to accept typing
         self.vABlevel = jsonDict["infrastructure"]["VAB"]
         self.pads = jsonDict["infrastructure"]["Launchpads"]
-        self.rocketsLaunched = jsonDict["rocketsLaunched"]
     
     def buildRocket(self):
         self.rocketBuildQueue.put("rocket")

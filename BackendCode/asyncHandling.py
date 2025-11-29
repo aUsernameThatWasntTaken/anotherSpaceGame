@@ -1,24 +1,25 @@
 import asyncio
 from BackendCode.WorldClass import World
+from BackendCode.errors import StopGame
 
 class handler:
     """Handles the input Queue and tick loop to allow input while the game runs."""
-    def __init__(self, tickFunc, handleInput, world: World):
+    def __init__(self, tickFunc, world: World):
         self.tick = tickFunc
-        self.handleInput = handleInput
         self.inputQueue: asyncio.Queue = asyncio.Queue()
-        routines = [world.handleVAB]+[world.handleLaunchPad for _ in range(world.pads)]
-        self.tasks: list[asyncio.Task] = [asyncio.create_task(routine()) for routine in routines] #maybe try asyncio taskgroups
+        self.routines = [world.handleVAB]+[world.handleLaunchPad for _ in range(world.pads)]
 
     async def main(self): # try blocks by chatgpt
         """starts gameloop and handles input"""
+        tasks = [asyncio.create_task(routine()) for routine in self.routines] #maybe try asyncio taskgroups
         try:
             while True:
                 self.tick()
                 await asyncio.sleep(1/60)
-
-        finally:#execute no matter what to allow cleanup
-            for task in self.tasks:
+        except StopGame:
+            pass
+        finally: #execute no matter what to allow cleanup
+            for task in tasks:
                 task.cancel()
                 try:
                     await task
