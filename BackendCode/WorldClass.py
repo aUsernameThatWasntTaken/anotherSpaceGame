@@ -1,5 +1,17 @@
 import asyncio
 
+class PadStats:
+    def __init__(self):
+        self.empty = 0
+        self.awaitingRocket = 0
+        self.awaitingPayload = 0
+    def __dict__(self):
+        return {
+            "empty":self.empty,
+            "awaitingRocket":self.awaitingRocket,
+            "awaitingPayload":self.awaitingPayload
+        }
+
 class World:
     def __init__(self, jsonDict):
         self.rocketBuildTime = 10 # seconds with a Lvl1 VAB
@@ -8,6 +20,11 @@ class World:
         self.rocketLaunchQueue = asyncio.Queue()
         self.payloadQueue = asyncio.Queue()
         self.readWorldData(jsonDict)
+        self.padStats = PadStats()
+    
+    def getStats(self):
+        return {"pads":dict(self.padStats),
+                "queues":{}}
     
     def readWorldData(self, jsonDict):
         self.money = int(jsonDict["money"]) # casting value for myPy to accept typing
