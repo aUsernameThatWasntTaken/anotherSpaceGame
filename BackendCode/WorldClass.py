@@ -1,4 +1,5 @@
 import asyncio
+from BackendCode.techtree import Unlocks
 
 class PadStats:
     def __init__(self):
@@ -41,6 +42,7 @@ class World:
         self.money = int(jsonDict["money"]) # casting value for myPy to accept typing
         self.vABlevel = jsonDict["infrastructure"]["VAB"]
         self.pads = jsonDict["infrastructure"]["Launchpads"]
+        self.unlocks = Unlocks(jsonDict["unlocks"])
     
     def buildRocket(self):
         self.queues.build.put_nowait("rocket")
