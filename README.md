@@ -1,16 +1,12 @@
 # A game about space 
 (this time I will not abandon it, as I do not have to deal with UI - Max)
-Note To Saahil: Please look at "to add" list before planning your UI, as later changes may be costly timewise
 
 Features:
-* "launch" button
-
-# **TODO immediately:**
-* add a GUI protocol in a new file
+* a bunch of buttons
 
 To add:
-* Multi-stage Rocket launches
+* Realistic tech tree (Sub-orbital, Orbital, Refurbishable, Reusable, and a lot in between and in parallel to this core progression)
+* the moon
+* space-craft Payloads
 * Orbital assembly of vehicles
 * Lunar In-Situ Resource Utilisation
-* Realistic tech tree (Sub-orbital, Orbital, Refurbishable, Reusable, and a lot in between and in parallel to this core progression)
-* **an actual UI**
