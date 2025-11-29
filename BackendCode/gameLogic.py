@@ -43,8 +43,8 @@ class GameHandler:
         self.world.buildRocket()
     
     def queueComPayload(self):
-        self.world.payloadQueue.put("commercial")
+        self.world.payloadQueue.put_nowait("commercial")
     
     def queueSciPayload(self):
         self.world.money -= 100
-        self.world.payloadQueue.put("scientific")
+        self.world.payloadQueue.put_nowait("scientific")
