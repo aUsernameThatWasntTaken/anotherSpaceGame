@@ -45,7 +45,8 @@ class GUIhandler: #rename if you want
         build_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.75, 0.9, 0.1, 0.1),
                                                     text='BUILD',
                                                     manager=manager,
-                                                    object_id='#build_btn')
+                                                    object_id='#build_btn',
+                                                    command=gameHandler.world.buildRocket)
         research_button = pygame_gui.elements.UIButton(relative_rect=centered_rect(0.875, 0.9, 0.1, 0.1),
                                                     text='RESEARCH',
                                                     manager=manager,
