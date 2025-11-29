@@ -17,6 +17,12 @@ class Queues:
         self.build = asyncio.Queue()
         self.launch = asyncio.Queue()
         self.payload = asyncio.Queue()
+    def getLengths(self):
+        return {
+            "build"  :self.build  .qsize(),
+            "launch" :self.launch .qsize(),
+            "payload":self.payload.qsize()
+        }
 
 class World:
     def __init__(self, jsonDict):
@@ -27,8 +33,9 @@ class World:
         self.padStats = PadStats()
     
     def getStats(self):
-        return {"pads":dict(self.padStats),
-                "queues":{}}
+        return {"money":self.money,
+                "pads":dict(self.padStats),
+                "queues":self.queues.getLengths()}
     
     def readWorldData(self, jsonDict):
         self.money = int(jsonDict["money"]) # casting value for myPy to accept typing
