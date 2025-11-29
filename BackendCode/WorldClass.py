@@ -2,14 +2,14 @@ import asyncio
 
 class PadStats:
     def __init__(self):
-        self.empty = 0
+        self.launching = 0
         self.awaitingRocket = 0
         self.awaitingPayload = 0
     def __dict__(self):
         return {
-            "empty":self.empty,
             "awaitingRocket":self.awaitingRocket,
-            "awaitingPayload":self.awaitingPayload
+            "awaitingPayload":self.awaitingPayload,
+            "launching":self.launching
         }
 
 class Queues:
@@ -53,10 +53,19 @@ class World:
     async def handleLaunchPad(self):
         try:
             while True:
+
+                self.padStats.awaitingRocket +=1
                 rocket = await self.queues.launch.get()
+                self.padStats.awaitingRocket -=1
+
+                self.padStats.awaitingPayload +=1
                 payload = await self.queues.payload.get()
+                self.padStats.awaitingPayload -=1
+
                 if True:
+                    self.padStats.launching +=1
                     await asyncio.sleep(5)
+                    self.padStats.launching -=1
                     self.rocketsLaunched += 1
         except asyncio.CancelledError:
             # clean shutdown if cancelled
