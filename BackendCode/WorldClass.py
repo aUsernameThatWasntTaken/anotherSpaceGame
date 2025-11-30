@@ -30,6 +30,18 @@ class World:
         self.VABinUse = buildRocket in [event.name for event in self.eventHandler.events] #if any event is called BuildRocket
         self.padsInUse = len([event for event in self.eventHandler.events if event.name == launchRocket])
     
+    def toDict(self):
+        return {
+            "money":self.money,
+            "infrastructure":{
+                "VAB":self.vABlevel,
+                "Launchpads":self.pads
+            },
+            "unlocks":self.unlocks.all,
+            "events":self.eventHandler.getDict()
+        }
+
+
     def tick(self):
         self.VABtick()
         self.updatePads()

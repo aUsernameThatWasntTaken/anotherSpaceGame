@@ -38,7 +38,7 @@ class handler:
         # for each eventDict, gets the eventType assigned to the name and makes an instance of it
         self.events = [defaultEventTypes[eventDict["name"]]() for eventDict in eventDicts] 
 
-    def add(self, event):
+    def add(self, event: Event):
         self.events.append(event)
 
     def update(self, currentTime) ->None:

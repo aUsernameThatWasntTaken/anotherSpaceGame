@@ -7,7 +7,7 @@ from time import time
 
 #my modules:
 import BackendCode.saves as saves
-from BackendCode.errors import StopGame
+from BackendCode.errors import StopGame, SaveAndQuit
 
 
 class GUIhandler(Protocol):
@@ -31,6 +31,8 @@ class GameHandler:
                 self.tick()
         except StopGame:
             pass
+        except SaveAndQuit as e:
+            saves.saveGame(self.world, e.file)
 
     def tick(self):
         #will handle things like passive income and GUI

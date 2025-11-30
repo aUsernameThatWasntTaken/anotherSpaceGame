@@ -22,3 +22,7 @@ def getWorld(saveFileName):
         except json.JSONDecodeError:
             print("Save File corrupted or incompatible, starting new save")
             return World(defaultSave)
+
+def saveGame(world: World, saveFileName):
+    with open(saveFileName+".json") as f:
+        json.dump(world.toDict(), f, indent=4)
