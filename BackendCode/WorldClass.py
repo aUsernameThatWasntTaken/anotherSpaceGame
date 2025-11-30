@@ -1,5 +1,3 @@
-import asyncio
-
 from BackendCode.events import handler as EventHandler
 from BackendCode.events import Event, buildRocket, launchRocket
 from BackendCode.techtree import Unlocks
@@ -22,8 +20,11 @@ class World:
         self.rocketCost = 1000
         self.queues = Queues()
         self.readWorldData(jsonDict)
-        self.padsInUse = 0
     
+
+    def tick(self):
+        self.VABtick()
+        self.updatePads()
     def getStats(self):
         return {"money":self.money,
                 "padsinUse":self.padsInUse,
@@ -36,13 +37,15 @@ class World:
         self.unlocks = Unlocks(jsonDict["unlocks"])
         self.eventHandler = EventHandler(jsonDict["events"])
         self.VABinUse = buildRocket in [event.name for event in self.eventHandler.events] #if any event is called BuildRocket
+        self.padsInUse = len([event for event in self.eventHandler.events if event.name == launchRocket])
     
     def buildRocket(self):
         self.queues.build.append("rocket")
         self.money -= self.rocketCost
-    
-    async def handleLaunchPad(self):
-        raise DeprecationWarning("just use padTick()")
+
+    def updatePads(self):
+        for i in range(self.pads - self.padsInUse): #for each pad not in use
+            self.padTick()
 
     def padTick(self):
         if len(self.queues.launch) == 0 and len(self.queues.payload) == 0:

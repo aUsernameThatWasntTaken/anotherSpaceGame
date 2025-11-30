@@ -1,3 +1,5 @@
+raise DeprecationWarning("Please do not")
+
 import asyncio
 from BackendCode.WorldClass import World
 from BackendCode.errors import StopGame
