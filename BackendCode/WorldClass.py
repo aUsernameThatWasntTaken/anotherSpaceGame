@@ -31,8 +31,8 @@ class World:
     
     def readWorldData(self, jsonDict):
         self.money = int(jsonDict["money"]) # casting value for myPy to accept typing
-        self.vABlevel = jsonDict["infrastructure"]["VAB"]
-        self.pads = jsonDict["infrastructure"]["Launchpads"]
+        self.vABlevel = int(jsonDict["infrastructure"]["VAB"])
+        self.pads = int(jsonDict["infrastructure"]["Launchpads"])
         self.unlocks = Unlocks(jsonDict["unlocks"])
         self.eventHandler = EventHandler(jsonDict["events"])
         self.VABinUse = buildRocket in [event.name for event in self.eventHandler.events] #if any event is called BuildRocket
