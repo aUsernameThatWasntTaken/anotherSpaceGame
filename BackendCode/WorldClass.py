@@ -1,6 +1,7 @@
 from BackendCode.events import handler as EventHandler
 from BackendCode.events import Event, buildRocket, launchRocket
 from BackendCode.techtree import Unlocks
+from BackendCode.errors import NotEnoughMoney
 
 class Queues:
     def __init__(self):
@@ -41,6 +42,10 @@ class World:
             "events":self.eventHandler.getDict()
         }
 
+    def spend(self, money):
+        if money>self.money:
+            raise NotEnoughMoney(money, money-self.money)
+        self.money-=money # after writing this function, money no longer looks like a real word.
 
     def tick(self):
         self.VABtick()
