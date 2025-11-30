@@ -1,7 +1,7 @@
 import asyncio
 
 from BackendCode.events import handler as EventHandler
-from BackendCode.events import Event
+from BackendCode.events import Event, buildRocket
 from BackendCode.techtree import Unlocks
 
 class PadStats:
@@ -47,6 +47,7 @@ class World:
         self.pads = jsonDict["infrastructure"]["Launchpads"]
         self.unlocks = Unlocks(jsonDict["unlocks"])
         self.eventHandler = EventHandler(jsonDict["events"])
+        self.VABinUse = buildRocket in [event.name for event in self.eventHandler.events] #if any event is called BuildRocket
     
     def buildRocket(self):
         self.queues.build.append("rocket")
@@ -78,11 +79,14 @@ class World:
             self.padStats.launching -=1
             self.rocketsLaunched += 1
     
-    def handleOneBuild(self):
+    def VABtick(self):
+        if self.VABinUse:
+            return
         try:
             toBuild = self.queues.build.pop(0)
         except IndexError:
             return
         def rollOutRocket():
             self.queues.launch.put_nowait(toBuild)
-        self.eventHandler.events.append(Event("BuildRocket",rollOutRocket,self.rocketBuildTime))
+            self.VABinUse = False
+        self.eventHandler.add(Event(buildRocket,rollOutRocket,self.rocketBuildTime))
