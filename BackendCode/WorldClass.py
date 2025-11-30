@@ -1,6 +1,7 @@
 import asyncio
 
 from BackendCode.events import handler as EventHandler
+from BackendCode.events import Event
 from BackendCode.techtree import Unlocks
 
 class PadStats:
@@ -17,7 +18,7 @@ class PadStats:
 
 class Queues:
     def __init__(self):
-        self.build = asyncio.Queue()
+        self.build = []
         self.launch = asyncio.Queue()
         self.payload = asyncio.Queue()
     def getLengths(self):
@@ -48,19 +49,11 @@ class World:
         self.eventHandler = EventHandler(jsonDict["events"])
     
     def buildRocket(self):
-        self.queues.build.put_nowait("rocket")
+        self.queues.build.append("rocket")
         self.money -= self.rocketCost
     
-
-
-    #TODO: Rewrite these to use event system
     async def handleVAB(self):
-        try:
-            while True:
-                self.handleOneBuild()
-        except asyncio.CancelledError:
-            # clean shutdown if cancelled
-            return
+        raise DeprecationWarning("Just call handleOneBuild every frame instead")
     
     async def handleLaunchPad(self):
         try:
@@ -85,8 +78,11 @@ class World:
             self.padStats.launching -=1
             self.rocketsLaunched += 1
     
-    async def handleOneBuild(self):
-        toBuild = await self.queues.build.get()
-        if toBuild == "rocket":
-            await asyncio.sleep(self.rocketBuildTime)
-            self.queues.launch.put_nowait("rocket")
+    def handleOneBuild(self):
+        try:
+            toBuild = self.queues.build.pop(0)
+        except IndexError:
+            return
+        def rollOutRocket():
+            self.queues.launch.put_nowait(toBuild)
+        self.eventHandler.events.append(Event("BuildRocket",rollOutRocket,self.rocketBuildTime))
