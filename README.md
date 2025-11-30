@@ -5,6 +5,7 @@ Features:
 * a bunch of buttons
 
 To add:
+* IMPORTANT: PAYLOAD FUNCTIONALITY
 * Realistic tech tree (Sub-orbital, Orbital, Refurbishable, Reusable, and a lot in between and in parallel to this core progression)
 * the moon
 * space-craft Payloads
