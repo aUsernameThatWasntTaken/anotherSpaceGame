@@ -21,15 +21,6 @@ class World:
         self.queues = Queues()
         self.readWorldData(jsonDict)
     
-
-    def tick(self):
-        self.VABtick()
-        self.updatePads()
-    def getStats(self):
-        return {"money":self.money,
-                "padsinUse":self.padsInUse,
-                "queues":self.queues.getLengths()}
-    
     def readWorldData(self, jsonDict):
         self.money = int(jsonDict["money"]) # casting value for myPy to accept typing
         self.vABlevel = int(jsonDict["infrastructure"]["VAB"])
@@ -38,6 +29,14 @@ class World:
         self.eventHandler = EventHandler(jsonDict["events"])
         self.VABinUse = buildRocket in [event.name for event in self.eventHandler.events] #if any event is called BuildRocket
         self.padsInUse = len([event for event in self.eventHandler.events if event.name == launchRocket])
+    
+    def tick(self):
+        self.VABtick()
+        self.updatePads()
+    def getStats(self):
+        return {"money":self.money,
+                "padsinUse":self.padsInUse,
+                "queues":self.queues.getLengths()}
     
     def buildRocket(self):
         self.queues.build.append("rocket")
