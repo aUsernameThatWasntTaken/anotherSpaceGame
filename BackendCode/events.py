@@ -1,0 +1,37 @@
+from time import time
+from typing import Callable, Any
+
+class Event:
+    """Works as is, but better to inherit and modify"""
+    def __init__(self, name: str, func: Callable[[],Any], timeUntil: float):
+        self.name = name
+        self.func = func
+        self.time = time()+timeUntil
+    def getDict(event, stopTime):
+        return {"name":event.name, "timeUntil":event.time-stopTime} 
+
+def eventType(name, func: Callable[[],Any], timeUntil):
+    def newEvent():
+        return Event(name, func, timeUntil)
+    return newEvent
+
+type EventType = Callable[[],Event]
+#for loading events at launch (a rather bad way to do this, as the functions are generalised, so info is lost, but alas)
+defaultEventTypes: dict[str,EventType] = {}
+
+class handler:
+    def __init__(self, eventDicts) -> None:
+        # for each eventDict, gets the eventType assigned to the name and makes an instance of it
+        self.events = [defaultEventTypes[eventDict["name"]]() for eventDict in eventDicts] 
+
+    def update(self, currentTime) ->None:
+        newEventsList: list[Event] = []
+        for event in self.events:
+            if event.time<currentTime:
+                event.func()
+            else:
+                newEventsList.append(event)
+        self.events = newEventsList
+    
+    def getDict(self, stopTime):
+        return [event.getDict(stopTime) for event in self.events]

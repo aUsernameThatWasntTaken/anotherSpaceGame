@@ -8,7 +8,8 @@ defaultSave = {
         "VAB":1,
         "Launchpads":1
     },
-    "unlocks":{"rocketSize":0}
+    "unlocks":{"rocketSize":0},
+    "events":[]
 }
 
 def getWorld(saveFileName):

@@ -1,4 +1,6 @@
 import asyncio
+
+from BackendCode.events import handler as EventHandler
 from BackendCode.techtree import Unlocks
 
 class PadStats:
@@ -43,11 +45,15 @@ class World:
         self.vABlevel = jsonDict["infrastructure"]["VAB"]
         self.pads = jsonDict["infrastructure"]["Launchpads"]
         self.unlocks = Unlocks(jsonDict["unlocks"])
+        self.eventHandler = EventHandler(jsonDict["events"])
     
     def buildRocket(self):
         self.queues.build.put_nowait("rocket")
         self.money -= self.rocketCost
     
+
+
+    #TODO: Rewrite these to use event system
     async def handleVAB(self):
         try:
             while True:
