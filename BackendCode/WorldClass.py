@@ -59,6 +59,13 @@ class World:
         self.queues.build.append("rocket")
         self.money -= self.rocketCost
 
+    def queueComPayload(self):
+        self.queues.payload.append("commercial")
+    
+    def queueSciPayload(self):
+        self.spend(100)
+        self.queues.payload.append("scientific")
+
     def updatePads(self):
         for i in range(self.pads - self.padsInUse): #for each pad not in use
             self.padTick()

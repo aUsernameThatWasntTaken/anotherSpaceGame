@@ -20,8 +20,8 @@ class GameHandler:
         self.world = saves.getWorld(saveFilename)
         self.lastTick = time()
         self.payloadFuncs = {
-            "com":self.queueComPayload,
-            "sci":self.queueSciPayload
+            "com":self.world.queueComPayload,
+            "sci":self.world.queueSciPayload
         }
     
     def run(self, GUIClass: Type[GUIhandler]):
@@ -53,10 +53,3 @@ class GameHandler:
 
     def launchRocket(self): # legacy name stays for now
         self.world.buildRocket()
-    
-    def queueComPayload(self):
-        self.world.queues.payload.append("commercial")
-    
-    def queueSciPayload(self):
-        self.world.spend(100)
-        self.world.queues.payload.append("scientific")
