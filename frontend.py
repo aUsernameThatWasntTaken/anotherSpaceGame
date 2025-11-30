@@ -75,7 +75,7 @@ GameHandler(saveFile).run(GUIhandler)
 
 # save and quit option
 # launchpad INFO (get stats using gameHandler.world.getStats())
-# "buy new launchpad" and "upgrade VAB" buttons (I will add the functionality soon)
+# "buy new launchpad" and "upgrade VAB" buttons (I will add the functionality soon -Max)
 # tech tree & research
 # cargo selection (COMMERCIAL/SCIENTIFIC/SPACESHIP)
 # money!
