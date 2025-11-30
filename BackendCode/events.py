@@ -1,3 +1,13 @@
+
+"""
+Adds events to replace async sleep, allowing you to put them in a save file.\n
+\n
+Example Usage:\n
+await asyncio.sleep(self.rocketBuildTime)\n
+rollOutRocket()\n
+To this:\n
+eventHandler.events.append(Event("BuildRocket",rollOutRocket,self.rocketBuildTime))
+"""
 from time import time
 from typing import Callable, Any
 
