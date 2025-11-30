@@ -2,7 +2,7 @@ import pygame
 import pygame_gui
 import os
 from BackendCode.gameLogic import GameHandler
-from BackendCode.errors import StopGame
+from BackendCode.errors import StopGame, NotEnoughMoney
 
 SCREEN_W = 1280
 SCREEN_H = 720
@@ -61,8 +61,11 @@ class GUIhandler: #rename if you want
             if event.type == pygame.QUIT:
                 pygame.quit()
                 raise StopGame()
-            
-            manager.process_events(event)
+            try:
+                manager.process_events(event)
+            except NotEnoughMoney:
+                #The user pressed a button to buy something they cannot afford
+                pass #you choose how to display this -Max
         
         manager.update(dt)
         manager.draw_ui(screen)
