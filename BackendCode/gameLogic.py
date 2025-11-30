@@ -40,13 +40,23 @@ class GameHandler:
         deltaT=startTime-self.lastTick
         self.lastTick = startTime
         self.GUI.update(self, deltaT)
+        if self.world.money<0:
+            raise RuntimeError("Money went negative after your last action. Please contact developer.")
     
-    def launchRocket(self):
+    def buyLaunchPad(self):
+        self.world.spend(1000)
+        self.world.pads+=1
+    
+    def upgradeVAB(self):
+        self.world.spend(10000)
+        self.world.vABlevel+=1
+
+    def launchRocket(self): # legacy name stays for now
         self.world.buildRocket()
     
     def queueComPayload(self):
         self.world.queues.payload.append("commercial")
     
     def queueSciPayload(self):
-        self.world.money -= 100
+        self.world.spend(100)
         self.world.queues.payload.append("scientific")
