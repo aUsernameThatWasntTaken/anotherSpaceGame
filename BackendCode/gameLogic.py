@@ -21,7 +21,6 @@ class GameHandler:
         self.world = saves.getWorld(saveFilename)
         self.lastTick = time()
         self.asyncHandler = asyncHandling.handler(self.tick, self.world)
-        self.isRunning = lambda: False
         self.payloadFuncs = {
             "com":self.queueComPayload,
             "sci":self.queueSciPayload
