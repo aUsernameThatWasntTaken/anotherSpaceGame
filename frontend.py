@@ -56,7 +56,6 @@ class GUIhandler: #rename if you want
                                                     manager=manager,
                                                     object_id='#payload_btn')
 
-        #TODO: add stats display using gameHandler.world.getStats()
     def update(self, gameHandler: GameHandler, dt):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -74,7 +73,8 @@ GameHandler(saveFile).run(GUIhandler)
 
 # things we need
 
-# launchpad INFO
+# launchpad INFO (get stats using gameHandler.world.getStats())
+# "buy new launchpad" and "upgrade VAB" buttons
 # tech tree & research
 # cargo selection (COMMERCIAL/SCIENTIFIC/SPACESHIP)
 # money!
