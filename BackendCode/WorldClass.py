@@ -1,31 +1,19 @@
 import asyncio
 
 from BackendCode.events import handler as EventHandler
-from BackendCode.events import Event, buildRocket
+from BackendCode.events import Event, buildRocket, launchRocket
 from BackendCode.techtree import Unlocks
-
-class PadStats:
-    def __init__(self):
-        self.launching = 0
-        self.awaitingRocket = 0
-        self.awaitingPayload = 0
-    def getDict(self):
-        return {
-            "awaitingRocket":self.awaitingRocket,
-            "awaitingPayload":self.awaitingPayload,
-            "launching":self.launching
-        }
 
 class Queues:
     def __init__(self):
         self.build = []
-        self.launch = asyncio.Queue()
-        self.payload = asyncio.Queue()
+        self.launch = []
+        self.payload = []
     def getLengths(self):
         return {
-            "build"  :self.build  .qsize(),
-            "launch" :self.launch .qsize(),
-            "payload":self.payload.qsize()
+            "build"  :len(self.build),
+            "launch" :len(self.launch),
+            "payload":len(self.payload)
         }
 
 class World:
@@ -34,11 +22,11 @@ class World:
         self.rocketCost = 1000
         self.queues = Queues()
         self.readWorldData(jsonDict)
-        self.padStats = PadStats()
+        self.padsInUse = 0
     
     def getStats(self):
         return {"money":self.money,
-                "pads":self.padStats.getDict(),
+                "padsinUse":self.padsInUse,
                 "queues":self.queues.getLengths()}
     
     def readWorldData(self, jsonDict):
@@ -54,27 +42,19 @@ class World:
         self.money -= self.rocketCost
     
     async def handleLaunchPad(self):
-        try:
-            while True:
-                await self.handleOneLaunch()
-        except asyncio.CancelledError:
-            # clean shutdown if cancelled
-            return
+        raise DeprecationWarning("just use padTick()")
 
-    async def handleOneLaunch(self):
-        self.padStats.awaitingRocket +=1
-        rocket = await self.queues.launch.get()
-        self.padStats.awaitingRocket -=1
+    def padTick(self):
+        if len(self.queues.launch) == 0 and len(self.queues.payload) == 0:
+            return # no rocket or no payload available
+        rocket = self.queues.launch.pop(0)
+        payload = self.queues.payload.pop(0)
+        def endLaunch():
+            self.padsInUse -=1
+            payload() # calls payload reward
 
-        self.padStats.awaitingPayload +=1
-        payload = await self.queues.payload.get()
-        self.padStats.awaitingPayload -=1
-
-        if True: # wait, what?
-            self.padStats.launching +=1
-            await asyncio.sleep(5)
-            self.padStats.launching -=1
-            self.rocketsLaunched += 1
+        self.padsInUse +=1
+        self.eventHandler.add(Event(launchRocket, endLaunch, 5))
     
     def VABtick(self):
         if self.VABinUse:

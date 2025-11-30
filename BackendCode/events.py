@@ -13,6 +13,7 @@ from typing import Callable, Any
 
 #standardised Event Names:
 buildRocket = "buildRocket"
+launchRocket = "launchRocket"
 
 class Event:
     """Works as is, but better to inherit and modify"""
