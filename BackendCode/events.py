@@ -11,6 +11,9 @@ eventHandler.events.append(Event("BuildRocket",rollOutRocket,self.rocketBuildTim
 from time import time
 from typing import Callable, Any
 
+#standardised Event Names:
+buildRocket = "buildRocket"
+
 class Event:
     """Works as is, but better to inherit and modify"""
     def __init__(self, name: str, func: Callable[[],Any], timeUntil: float):
@@ -33,6 +36,9 @@ class handler:
     def __init__(self, eventDicts) -> None:
         # for each eventDict, gets the eventType assigned to the name and makes an instance of it
         self.events = [defaultEventTypes[eventDict["name"]]() for eventDict in eventDicts] 
+
+    def add(self, event):
+        self.events.append(event)
 
     def update(self, currentTime) ->None:
         newEventsList: list[Event] = []
