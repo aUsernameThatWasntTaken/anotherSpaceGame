@@ -36,6 +36,7 @@ class GameHandler:
         deltaT=startTime-self.lastTick
         self.lastTick = startTime
         self.GUI.update(self, deltaT)
+        self.world.VABtick()
     
     def launchRocket(self):
         self.world.buildRocket()

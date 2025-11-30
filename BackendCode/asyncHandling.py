@@ -6,7 +6,7 @@ class handler:
     """Handles the input Queue and tick loop to allow input while the game runs."""
     def __init__(self, tickFunc, world: World):
         self.tick = tickFunc
-        self.routines = [world.handleVAB]+[world.handleLaunchPad for _ in range(world.pads)]
+        self.routines = [world.handleLaunchPad for _ in range(world.pads)]
 
     async def main(self): # try blocks by chatgpt
         """starts gameloop and handles input"""

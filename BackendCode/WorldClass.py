@@ -53,9 +53,6 @@ class World:
         self.queues.build.append("rocket")
         self.money -= self.rocketCost
     
-    async def handleVAB(self):
-        raise DeprecationWarning("Just call handleOneBuild every frame instead")
-    
     async def handleLaunchPad(self):
         try:
             while True:
