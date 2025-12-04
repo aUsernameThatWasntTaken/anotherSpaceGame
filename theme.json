@@ -1,8 +1,6 @@
 {
-    "button":
-    {
-        "colours":
-        {
+    "button": {
+        "colours": {
             "normal_border": "White",
             "normal_bg": "#699ff5",
             "normal_text": "White",
@@ -16,25 +14,22 @@
             "active_text": "White",
             "active_border": "White"
         },
-        "misc":
-        {
+        "misc": {
             "shape": "rounded_rectangle",
             "shape_corner_radius": "25",
             "border_width": "2"
         },
-        "font":
-        {
-           "name": "Space Mono",
-           "size": "20",
-           "bold": "0",
-           "italic": "0",
-           "regular_path": "Themes/Fonts/reg.ttf",
-           "bold_path": "Themes/Fonts/bold.ttf"
+        "font": {
+            "name": "Space Mono",
+            "size": "20",
+            "bold": "0",
+            "italic": "0",
+            "regular_path": "Themes/Fonts/reg.ttf",
+            "bold_path": "Themes/Fonts/bold.ttf"
         }
     },
     "#payload_btn": {
-        "colours":
-        {
+        "colours": {
             "normal_border": "White",
             "normal_bg": "#00C853",
             "normal_text": "White",
@@ -50,8 +45,7 @@
         }
     },
     "#build_btn": {
-        "colours":
-        {
+        "colours": {
             "normal_border": "White",
             "normal_bg": "#FFD700",
             "normal_text": "White",
@@ -67,8 +61,7 @@
         }
     },
     "#research_btn": {
-        "colours":
-        {
+        "colours": {
             "normal_border": "White",
             "normal_bg": "#00CED1",
             "normal_text": "White",
@@ -81,6 +74,91 @@
             "active_bg": "#008688",
             "active_text": "White",
             "active_border": "White"
+        }
+    },
+    "#research_panel": {
+        "colours": {
+            "dark_bg": "#1a1f2e",
+            "normal_border": "#4a90d9"
+        },
+        "misc": {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "15",
+            "border_width": "3"
+        }
+    },
+    "#research_title": {
+        "colours": {
+            "dark_bg": "#2a3548",
+            "normal_border": "#4a90d9"
+        },
+        "misc": {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "10",
+            "border_width": "2"
+        }
+    },
+    "#research_title.label": {
+        "colours": {
+            "normal_text": "#4a90d9"
+        },
+        "font": {
+            "name": "Space Mono",
+            "size": "28",
+            "bold": "1",
+            "regular_path": "Themes/Fonts/reg.ttf",
+            "bold_path": "Themes/Fonts/bold.ttf"
+        }
+    },
+    "#tech_btn": {
+        "colours": {
+            "normal_border": "#4a90d9",
+            "normal_bg": "#2a3548",
+            "normal_text": "White",
+            "hovered_bg": "#3a4558",
+            "hovered_text": "White",
+            "hovered_border": "#6ab0f9",
+            "selected_bg": "#4a5568",
+            "selected_text": "White",
+            "selected_border": "#6ab0f9",
+            "active_bg": "#5a6578",
+            "active_text": "White",
+            "active_border": "#8ad0ff"
+        },
+        "misc": {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "8",
+            "border_width": "2"
+        },
+        "font": {
+            "name": "Space Mono",
+            "size": "14",
+            "bold": "0",
+            "regular_path": "Themes/Fonts/reg.ttf",
+            "bold_path": "Themes/Fonts/bold.ttf"
+        }
+    },
+    "panel": {
+        "colours": {
+            "dark_bg": "#1e2433",
+            "normal_border": "#4a90d9"
+        },
+        "misc": {
+            "shape": "rounded_rectangle",
+            "shape_corner_radius": "12",
+            "border_width": "2"
+        }
+    },
+    "label": {
+        "colours": {
+            "normal_text": "White"
+        },
+        "font": {
+            "name": "Space Mono",
+            "size": "18",
+            "bold": "0",
+            "regular_path": "Themes/Fonts/reg.ttf",
+            "bold_path": "Themes/Fonts/bold.ttf"
         }
     }
 }
