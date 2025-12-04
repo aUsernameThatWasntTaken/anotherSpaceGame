@@ -8,7 +8,7 @@ defaultSave = {
         "VAB":1,
         "Launchpads":1
     },
-    "unlocks":{"rocketSize":0},
+    "upgrades":{"rocketSize":0},
     "events":[]
 }
 

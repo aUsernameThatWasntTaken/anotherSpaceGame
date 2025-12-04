@@ -1,6 +1,6 @@
 from BackendCode.events import handler as EventHandler
 from BackendCode.events import Event, buildRocket, launchRocket
-from BackendCode.techtree import Unlocks
+from BackendCode.upgrades import Unlocks
 from BackendCode.errors import NotEnoughMoney
 
 class Queues:
@@ -26,7 +26,7 @@ class World:
         self.money = int(jsonDict["money"]) # casting value for myPy to accept typing
         self.vABlevel = int(jsonDict["infrastructure"]["VAB"])
         self.pads = int(jsonDict["infrastructure"]["Launchpads"])
-        self.unlocks = Unlocks(jsonDict["unlocks"])
+        self.unlocks = Unlocks(jsonDict["upgrades"])
         self.eventHandler = EventHandler(jsonDict["events"])
         self.VABinUse = buildRocket in [event.name for event in self.eventHandler.events] #if any event is called BuildRocket
         self.padsInUse = len([event for event in self.eventHandler.events if event.name == launchRocket])
