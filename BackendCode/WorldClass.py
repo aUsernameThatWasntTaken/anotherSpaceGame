@@ -93,3 +93,5 @@ class World:
             self.queues.launch.put_nowait(toBuild)
             self.VABinUse = False
         self.eventHandler.add(Event(buildRocket,rollOutRocket,self.rocketBuildTime))
+    def getMoney(self):
+        return self.money

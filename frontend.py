@@ -1,18 +1,20 @@
 import pygame
 import pygame_gui
-import os
-from BackendCode.gameLogic import GameHandler
-from BackendCode.errors import StopGame, NotEnoughMoney
-from BackendCode.saves import getTechTree
+
+from BackendCode.backendInterface import Backend, GUIClass, StopGame, NotEnoughMoney, getTechTree 
 
 # note for future us: this was 849 lines at one point
 
-# also, there's a bunch of UserWarning from pygame_gui, such as 
+# The GUI isn't showing. -Max
+# I downloaded the source code before my newest changes, it still didn't show, so I know I didn't break anything.
+# also, there's a bunch of probably related UserWarnings from pygame_gui, such as:
 # Clamping shape_corner_radius of: 25, to: 18
-# and
+# and:
 # Label Rect is too small for text: placeholder text - size diff: (154, -2)
-# and the GUI isn't showing.
-# I downloaded the source code before my newest changes, it still didn't show, so I didn't break anything.
+
+# Another note: should I make a wrapper module for pygame_gui to simplify this module? -Max
+# e.g.  _toggle_settings_panel can be completely replaced using a custom UIPanel class with a toggle method.
+# or 
 
 SCREEN_W = 1920
 SCREEN_H = 1080
@@ -43,17 +45,19 @@ def centered_rect(center_x_scale, center_y_scale, width_scale, height_scale):
 
     return pygame.Rect((top_left_x, top_left_y), (width, height))
 
+# note to Saahil - Maybe draw tech tree on a sort of grid? It matches my idea of the tech tree better.
 
-# hardcoded but whatever
+# The tree divisions are hardcoded, but whatever
 # 30 techs, 3 trees (2 large, 1 small)
-# Positions are (x, y) in pixels from tree origin
+
+# === TREE 1 (Top    - Large, techs  1-12) - branches outward ===
+# === TREE 2 (Middle - Large, techs 13-24) - branches outward ===
+# === TREE 3 (Bottom - Small, techs 25-30) - branches outward ===
+
+# Positions are [x, y] in pixels from tree origin
 # Trees branch OUT (end with multiple techs, not converge to 1)
 
 TECH_TREE = getTechTree()
-
-# === TREE 1 (Top - Large, techs 1-12) - branches outward ===
-# === TREE 2 (Middle - Large, techs 13-24) - branches outward ===
-# === TREE 3 (Bottom - Small, techs 25-30) - branches outward ===
   
 # Tree layout constants
 TREE_NODE_WIDTH = 140
@@ -66,17 +70,18 @@ TREE_ORIGINS = [
 TREE_LABELS = ["TREE 1", "TREE 2", "TREE 3"]
 
 
-class GUIhandler:
-    def __init__(self, gameHandler: GameHandler):
-        self.gameHandler = gameHandler
+class GUIhandler(GUIClass):
+    def __init__(self, gameHandler: Backend):
+        # self.gameHandler = gameHandler  # please don't do this, The gameHandler should be passed into
+                                          # update() each time to ensure that the data updates properly
         self.selectedPayload = "COMMERCIAL"
         self.info_panel_visible = False
         self.research_panel_visible = False
         self.settings_panel_visible = False
 
         # Store tech buttons for event handling
-        self.tech_buttons = {}
-        self.tech_node_positions = {}  # Base positions of each node center
+        self.tech_buttons: dict = {}
+        self.tech_node_positions: dict = {}  # Base positions of each node center
 
         # Panning state for tech tree
         self.is_panning = False
@@ -509,14 +514,14 @@ class GUIhandler:
         payload_types = ["COMMERCIAL", "SCIENTIFIC", "SPACESHIP"]
         current_index = payload_types.index(self.selectedPayload)
         self.selectedPayload = payload_types[(current_index + 1) % len(payload_types)]
-        self.payload_button.set_text(self.selectedPayload[:3])
+        self.payload_button.set_text(self.selectedPayload[:3]) # hehe :3 -Max
 
-    def _prepare_payload(self):
-        self.gameHandler.payloadFuncs[self.selectedPayload]()
+    def _prepare_payload(self, gameHandler: Backend):
+        gameHandler.payloadFuncs[self.selectedPayload]()
 
-    def _update_info_panel(self):
+    def _update_info_panel(self, gameHandler: Backend):
         try:
-            stats = self.gameHandler.world.getStats()
+            stats = gameHandler.getWorldStats()
             self.launches_label.set_text(f"Launches: {stats.get('launches', 0)}")
             self.success_rate_label.set_text(
                 f"Success Rate: {stats.get('success_rate', 0)}%"
@@ -528,9 +533,9 @@ class GUIhandler:
         except (AttributeError, KeyError):
             pass
 
-    def _update_money_display(self):
+    def _update_money_display(self, gameHandler: Backend):
         try:
-            money = self.gameHandler.world.getMoney()
+            money = gameHandler.getMoney()
             self.money_label.set_text(f"${money:,}")
         except AttributeError:
             pass
@@ -568,7 +573,7 @@ class GUIhandler:
                     print(f"Research: {tech_name}")
                     break
 
-    def update(self, gameHandler: GameHandler, dt):
+    def update(self, gameHandler: Backend, dt):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -607,7 +612,7 @@ class GUIhandler:
             manager.process_events(event)
 
         # Update dynamic displays
-        self._update_money_display()
+        self._update_money_display(gameHandler)
         
         # Check tech hover for custom tooltip
         self._check_tech_hover()
@@ -633,7 +638,7 @@ class GUIhandler:
 
 
 saveFile = "None"
-GameHandler(saveFile).run(GUIhandler)
+Backend(saveFile).run(GUIhandler)
 
 # things we need
 
