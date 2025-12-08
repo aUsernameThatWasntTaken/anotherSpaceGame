@@ -3,6 +3,16 @@ import pygame_gui
 import os
 from BackendCode.gameLogic import GameHandler
 from BackendCode.errors import StopGame, NotEnoughMoney
+from BackendCode.saves import getTechTree
+
+# note for future us: this was 849 lines at one point
+
+# also, there's a bunch of UserWarning from pygame_gui, such as 
+# Clamping shape_corner_radius of: 25, to: 18
+# and
+# Label Rect is too small for text: placeholder text - size diff: (154, -2)
+# and the GUI isn't showing.
+# I downloaded the source code before my newest changes, it still didn't show, so I didn't break anything.
 
 SCREEN_W = 1920
 SCREEN_H = 1080
@@ -39,224 +49,12 @@ def centered_rect(center_x_scale, center_y_scale, width_scale, height_scale):
 # Positions are (x, y) in pixels from tree origin
 # Trees branch OUT (end with multiple techs, not converge to 1)
 
-TECH_TREE = {
-    # === TREE 1 (Top - Large, 12 techs) - branches outward ===
-    "Dummy Tech 1": {
-        "cost": 100,
-        "prerequisites": [],
-        "description": "PLACEHOLDER",
-        "pos": (0, 100),
-        "tree": 0
-    },
-    "Dummy Tech 2": {
-        "cost": 200,
-        "prerequisites": ["Dummy Tech 1"],
-        "description": "PLACEHOLDER",
-        "pos": (180, 50),
-        "tree": 0
-    },
-    "Dummy Tech 3": {
-        "cost": 200,
-        "prerequisites": ["Dummy Tech 1"],
-        "description": "PLACEHOLDER",
-        "pos": (180, 150),
-        "tree": 0
-    },
-    "Dummy Tech 4": {
-        "cost": 300,
-        "prerequisites": ["Dummy Tech 2"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 0),
-        "tree": 0
-    },
-    "Dummy Tech 5": {
-        "cost": 350,
-        "prerequisites": ["Dummy Tech 2"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 70),
-        "tree": 0
-    },
-    "Dummy Tech 6": {
-        "cost": 400,
-        "prerequisites": ["Dummy Tech 3"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 140),
-        "tree": 0
-    },
-    "Dummy Tech 7": {
-        "cost": 450,
-        "prerequisites": ["Dummy Tech 3"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 210),
-        "tree": 0
-    },
-    "Dummy Tech 8": {
-        "cost": 600,
-        "prerequisites": ["Dummy Tech 4"],
-        "description": "PLACEHOLDER",
-        "pos": (540, 0),
-        "tree": 0
-    },
-    "Dummy Tech 9": {
-        "cost": 550,
-        "prerequisites": ["Dummy Tech 5"],
-        "description": "PLACEHOLDER",
-        "pos": (540, 70),
-        "tree": 0
-    },
-    "Dummy Tech 10": {
-        "cost": 700,
-        "prerequisites": ["Dummy Tech 6"],
-        "description": "PLACEHOLDER",
-        "pos": (540, 140),
-        "tree": 0
-    },
-    "Dummy Tech 11": {
-        "cost": 1200,
-        "prerequisites": ["Dummy Tech 7"],
-        "description": "PLACEHOLDER",
-        "pos": (540, 210),
-        "tree": 0
-    },
-    "Dummy Tech 12": {
-        "cost": 1500,
-        "prerequisites": ["Dummy Tech 7"],
-        "description": "PLACEHOLDER",
-        "pos": (540, 280),
-        "tree": 0
-    },
+TECH_TREE = getTechTree()
 
-    # === TREE 2 (Middle - Large, 12 techs) - branches outward ===
-    "Dummy Tech 13": {
-        "cost": 100,
-        "prerequisites": [],
-        "description": "PLACEHOLDER",
-        "pos": (0, 100),
-        "tree": 1
-    },
-    "Dummy Tech 14": {
-        "cost": 200,
-        "prerequisites": ["Dummy Tech 13"],
-        "description": "PLACEHOLDER",
-        "pos": (180, 30),
-        "tree": 1
-    },
-    "Dummy Tech 15": {
-        "cost": 250,
-        "prerequisites": ["Dummy Tech 13"],
-        "description": "PLACEHOLDER",
-        "pos": (180, 100),
-        "tree": 1
-    },
-    "Dummy Tech 16": {
-        "cost": 200,
-        "prerequisites": ["Dummy Tech 13"],
-        "description": "PLACEHOLDER",
-        "pos": (180, 170),
-        "tree": 1
-    },
-    "Dummy Tech 17": {
-        "cost": 400,
-        "prerequisites": ["Dummy Tech 14"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 0),
-        "tree": 1
-    },
-    "Dummy Tech 18": {
-        "cost": 450,
-        "prerequisites": ["Dummy Tech 14"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 60),
-        "tree": 1
-    },
-    "Dummy Tech 19": {
-        "cost": 350,
-        "prerequisites": ["Dummy Tech 15"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 120),
-        "tree": 1
-    },
-    "Dummy Tech 20": {
-        "cost": 300,
-        "prerequisites": ["Dummy Tech 16"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 180),
-        "tree": 1
-    },
-    "Dummy Tech 21": {
-        "cost": 700,
-        "prerequisites": ["Dummy Tech 16"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 240),
-        "tree": 1
-    },
-    "Dummy Tech 22": {
-        "cost": 800,
-        "prerequisites": ["Dummy Tech 17"],
-        "description": "PLACEHOLDER",
-        "pos": (540, 0),
-        "tree": 1
-    },
-    "Dummy Tech 23": {
-        "cost": 500,
-        "prerequisites": ["Dummy Tech 19"],
-        "description": "PLACEHOLDER",
-        "pos": (540, 120),
-        "tree": 1
-    },
-    "Dummy Tech 24": {
-        "cost": 1200,
-        "prerequisites": ["Dummy Tech 21"],
-        "description": "PLACEHOLDER",
-        "pos": (540, 240),
-        "tree": 1
-    },
-
-    # === TREE 3 (Bottom - Small, 6 techs) - branches outward ===
-    "Dummy Tech 25": {
-        "cost": 100,
-        "prerequisites": [],
-        "description": "PLACEHOLDER",
-        "pos": (0, 70),
-        "tree": 2
-    },
-    "Dummy Tech 26": {
-        "cost": 300,
-        "prerequisites": ["Dummy Tech 25"],
-        "description": "PLACEHOLDER",
-        "pos": (180, 20),
-        "tree": 2
-    },
-    "Dummy Tech 27": {
-        "cost": 250,
-        "prerequisites": ["Dummy Tech 25"],
-        "description": "PLACEHOLDER",
-        "pos": (180, 120),
-        "tree": 2
-    },
-    "Dummy Tech 28": {
-        "cost": 500,
-        "prerequisites": ["Dummy Tech 26"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 0),
-        "tree": 2
-    },
-    "Dummy Tech 29": {
-        "cost": 450,
-        "prerequisites": ["Dummy Tech 26"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 60),
-        "tree": 2
-    },
-    "Dummy Tech 30": {
-        "cost": 1000,
-        "prerequisites": ["Dummy Tech 27"],
-        "description": "PLACEHOLDER",
-        "pos": (360, 120),
-        "tree": 2
-    },
-}
-
+# === TREE 1 (Top - Large, techs 1-12) - branches outward ===
+# === TREE 2 (Middle - Large, techs 13-24) - branches outward ===
+# === TREE 3 (Bottom - Small, techs 25-30) - branches outward ===
+  
 # Tree layout constants
 TREE_NODE_WIDTH = 140
 TREE_NODE_HEIGHT = 40
@@ -837,12 +635,10 @@ class GUIhandler:
 saveFile = "None"
 GameHandler(saveFile).run(GUIhandler)
 
-# TEST COMMIT
-
 # things we need
 
 # save and quit option
-# launchpad INFO (get stats using gameHandler.world.getStats())
+# IMPORTANT: launchpad INFO (get stats using gameHandler.world.getStats())
 # "buy new launchpad" and "upgrade VAB" buttons (I will add the functionality soon -Max)
 # tech tree & research
 # cargo selection (COMMERCIAL/SCIENTIFIC/SPACESHIP)

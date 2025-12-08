@@ -26,3 +26,7 @@ def getWorld(saveFileName):
 def saveGame(world: World, saveFileName):
     with open(saveFileName+".json") as f:
         json.dump(world.toDict(), f, indent=4)
+
+def getTechTree():
+    with open("techTree.json") as f:
+        return json.load(f)
