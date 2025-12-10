@@ -1,0 +1,21 @@
+note to Saahil - Maybe draw tech tree on a sort of grid? It matches my idea of the tech tree better. -Max
+
+The tree divisions are hardcoded, but whatever
+30 techs, 3 trees (2 large, 1 small)
+
+=== TREE 1 (Top    - Large, techs  1-12) - branches outward ===
+=== TREE 2 (Middle - Large, techs 13-24) - branches outward ===
+=== TREE 3 (Bottom - Small, techs 25-30) - branches outward ===
+
+Positions are [x, y] in pixels from tree origin
+Trees branch OUT (end with multiple techs, not converge to 1)
+
+
+things we need:
+
+save and quit option
+IMPORTANT: launchpad INFO (get stats using gameHandler.world.getStats())
+"buy new launchpad" and "upgrade VAB" buttons (I will add the functionality soon -Max)
+tech tree & research
+cargo selection (COMMERCIAL/SCIENTIFIC/SPACESHIP)
+money!
