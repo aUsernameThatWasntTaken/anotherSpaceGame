@@ -1,11 +1,17 @@
 from FrontendCode.pyGameWrapper import pygame, pygame_gui
 
 from FrontendCode.helpers import SCREEN_H, SCREEN_W, TREE_ORIGINS, TREE_NODE_WIDTH, TREE_NODE_HEIGHT, TREE_LABELS
-from FrontendCode.pyGameWrapper import manager
+from FrontendCode.pyGameWrapper import manager, screen
 
 class TechTreeHandler:
     def __init__(self, techTree):
         self.techTree = techTree
+
+        self.visible = False
+
+        # Store tech buttons for event handling
+        self.tech_buttons = {}
+        self.tech_node_positions = {}  # Base positions of each node center
 
         # Calculate total tree bounds
         max_x = 0
@@ -79,7 +85,7 @@ class TechTreeHandler:
         # Pre-render tree lines surface
         self._render_tree_lines()
 
-    def _render_tree_lines(self, TECH_TREE):
+    def _render_tree_lines(self):
         self.tree_surface = pygame.Surface(self.tree_surface_size, pygame.SRCALPHA)
         self.tree_surface.fill((0, 0, 0, 0))
 
@@ -94,7 +100,7 @@ class TechTreeHandler:
             self.tree_surface.blit(text_surface, (origin_x, origin_y - 40))
 
         # Draw connections
-        for tech_name, tech_data in TECH_TREE.items():
+        for tech_name, tech_data in self.techTree.items():
             end_pos = self.tech_node_positions[tech_name]
 
             for prereq_name in tech_data["prerequisites"]:
@@ -128,7 +134,7 @@ class TechTreeHandler:
 
             tech_button.set_relative_position((new_x, new_y))
 
-    def _show_tech_tree(self):
+    def show(self):
         # Center the tree within the panel
         self.pan_offset_x = 50
         self.pan_offset_y = 50
@@ -136,12 +142,20 @@ class TechTreeHandler:
         self.research_panel.show()
         self._update_tech_tree_positions()
 
-    def _hide_tech_tree(self):
+    def hide(self):
         self.research_panel.hide()
         self.hovered_tech = None
 
-    def _draw_tech_tree_lines(self, screen):
-        if not self.research_panel_visible or not self.tree_surface:
+    def toggle(self):
+        self.visible = not self.visible
+        if self.visible:
+            self.show()
+        else:
+            self.is_panning = False
+            self.hide()
+    
+    def _draw_tech_tree_lines(self):
+        if not self.visible or not self.tree_surface:
             return
         
         panel = self.research_panel_rect
@@ -159,7 +173,7 @@ class TechTreeHandler:
         screen.set_clip(old_clip)
     
     def _check_tech_hover(self):
-        if not self.research_panel_visible:
+        if not self.visible:
             self.hovered_tech = None
             return
             
@@ -175,8 +189,8 @@ class TechTreeHandler:
                 self.hovered_tech = tech_name
                 break
     
-    def _draw_custom_tooltip(self, screen):
-        if not self.hovered_tech or not self.research_panel_visible:
+    def _draw_custom_tooltip(self):
+        if not self.hovered_tech or not self.visible:
             return
             
         tech_data = self.techTree[self.hovered_tech]

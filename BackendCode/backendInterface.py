@@ -24,6 +24,7 @@ class Backend:
         world = self.handler.world
         self.getWorldStats = world.getStats
         self.getMoney = world.getMoney
+        self.buildRocket = world.buildRocket
 
     def save(self, fileName):
         saves.saveGame(self.handler.world, fileName)

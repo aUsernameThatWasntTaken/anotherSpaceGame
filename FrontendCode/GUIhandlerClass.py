@@ -2,7 +2,7 @@ from FrontendCode.pyGameWrapper import pygame, pygame_gui # Uses the same instan
 
 from BackendCode.backendInterface import Backend, StopGame, NotEnoughMoney
 
-from FrontendCode.pyGameWrapper import screen, manager
+from FrontendCode.pyGameWrapper import screen, manager, ToggledPanel
 from FrontendCode.helpers import SCREEN_H, SCREEN_W
 from FrontendCode.techTree import TechTreeHandler
 
@@ -11,15 +11,10 @@ class GUIhandler:
         # self.gameHandler = gameHandler  # please don't do this, The gameHandler should be passed into
                                           # update() each time to ensure that the data updates properly
         self.selectedPayload = "COMMERCIAL"
-        self.info_panel_visible = False
-        self.research_panel_visible = False
-        self.settings_panel_visible = False
 
         self.techTree = techTree
 
-        # Store tech buttons for event handling
-        self.tech_buttons: dict = {}
-        self.tech_node_positions: dict = {}  # Base positions of each node center
+        self.buildRocketFunction = gameHandler.buildRocket
 
         # Panning state for tech tree
         self.is_panning = False
@@ -111,10 +106,10 @@ class GUIhandler:
         self._create_settings_panel()
         self._create_info_panel()
 
-    def _create_settings_panel(self, manager):
+    def _create_settings_panel(self):
         panel_width = 400
         panel_height = 200
-        self.settings_panel = pygame_gui.elements.UIPanel(
+        self.settings_panel = ToggledPanel(pygame_gui.elements.UIPanel(
             relative_rect=pygame.Rect(
                 (SCREEN_W - panel_width) // 2,
                 (SCREEN_H - panel_height) // 2,
@@ -122,27 +117,27 @@ class GUIhandler:
                 panel_height
             ),
             manager=manager
-        )
+        ))
         self.settings_panel.hide()
 
         pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((10, 10), (380, 30)),
             text="Settings",
             manager=manager,
-            container=self.settings_panel,
+            container=self.settings_panel.panel,
         )
 
         self.save_quit_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(((panel_width - 200) // 2, 70), (200, 50)),
             text="Save & Quit",
             manager=manager,
-            container=self.settings_panel,
+            container=self.settings_panel.panel,
         )
 
-    def _create_info_panel(self, manager):
+    def _create_info_panel(self):
         panel_width = 350
         panel_height = 400
-        self.info_panel = pygame_gui.elements.UIPanel(
+        self.info_panel = ToggledPanel(pygame_gui.elements.UIPanel(
             relative_rect=pygame.Rect(
                 (SCREEN_W - panel_width) // 2,
                 (SCREEN_H - panel_height) // 2,
@@ -150,42 +145,42 @@ class GUIhandler:
                 panel_height
             ),
             manager=manager
-        )
+        ))
         self.info_panel.hide()
 
         pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((10, 10), (330, 30)),
             text="placeholder text",
             manager=manager,
-            container=self.info_panel,
+            container=self.info_panel.panel,
         )
 
         self.launches_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((10, 60), (330, 25)),
             text="placeholder text",
             manager=manager,
-            container=self.info_panel,
+            container=self.info_panel.panel,
         )
 
         self.success_rate_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((10, 90), (330, 25)),
             text="placeholder text",
             manager=manager,
-            container=self.info_panel,
+            container=self.info_panel.panel,
         )
 
         self.payload_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((10, 120), (330, 25)),
             text="placeholder text",
             manager=manager,
-            container=self.info_panel,
+            container=self.info_panel.panel,
         )
 
         self.vab_level_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((10, 150), (330, 25)),
             text="placeholder text",
             manager=manager,
-            container=self.info_panel,
+            container=self.info_panel.panel,
         )
 
         button_width = 200
@@ -193,38 +188,15 @@ class GUIhandler:
             relative_rect=pygame.Rect(((panel_width - button_width) // 2, 200), (button_width, 50)),
             text="Buy New Launchpad",
             manager=manager,
-            container=self.info_panel,
+            container=self.info_panel.panel,
         )
 
         self.upgrade_vab_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(((panel_width - button_width) // 2, 270), (button_width, 50)),
             text="Upgrade VAB",
             manager=manager,
-            container=self.info_panel,
+            container=self.info_panel.panel,
         )
-
-    def _toggle_info_panel(self):
-        self.info_panel_visible = not self.info_panel_visible
-        if self.info_panel_visible:
-            self._update_info_panel()
-            self.info_panel.show()
-        else:
-            self.info_panel.hide()
-
-    def _toggle_research_panel(self):
-        self.research_panel_visible = not self.research_panel_visible
-        if self.research_panel_visible:
-            self._show_tech_tree()
-        else:
-            self.is_panning = False
-            self._hide_tech_tree()
-
-    def _toggle_settings_panel(self):
-        self.settings_panel_visible = not self.settings_panel_visible
-        if self.settings_panel_visible:
-            self.settings_panel.show()
-        else:
-            self.settings_panel.hide()
 
     def _cycle_payload(self):
         payload_types = ["COMMERCIAL", "SCIENTIFIC", "SPACESHIP"]
@@ -263,15 +235,15 @@ class GUIhandler:
         if ui_element == self.prepare_payload_button:
             self._prepare_payload()
         elif ui_element == self.build_button:
-            self.gameHandler.world.buildRocket()
+            self.buildRocketFunction()
         elif ui_element == self.research_button:
-            self._toggle_research_panel()
+            self.techTreeHandler.toggle()
         elif ui_element == self.payload_button:
             self._cycle_payload()
         elif ui_element == self.settings_button:
-            self._toggle_settings_panel()
+            self.settings_panel.toggle()
         elif ui_element == self.info_button:
-            self._toggle_info_panel()
+            self.info_panel.toggle()
 
         # Panel buttons
         elif ui_element == self.save_quit_button:
@@ -296,7 +268,7 @@ class GUIhandler:
                 raise StopGame()
 
             # Handle panning for research panel
-            if self.research_panel_visible:
+            if self.techTreeHandler.visible:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:  # Left click to pan
                         self.is_panning = True
@@ -337,7 +309,7 @@ class GUIhandler:
         screen.fill((20, 25, 30))
 
         # Draw overlay if research visible
-        if self.research_panel_visible:
+        if self.techTreeHandler.visible:
             screen.blit(self.overlay_surface, (0, 0))
 
         manager.update(dt)
@@ -348,6 +320,6 @@ class GUIhandler:
         self.techTreeHandler._draw_tech_tree_lines()
         
         # Draw custom tooltip AFTER gui elements (on top)
-        self.techTreeHandler._draw_custom_tooltip(self.techTree)
+        self.techTreeHandler._draw_custom_tooltip()
         
         pygame.display.update()
