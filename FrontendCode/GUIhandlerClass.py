@@ -5,6 +5,7 @@ from BackendCode.backendInterface import Backend, StopGame, NotEnoughMoney
 from FrontendCode.pyGameWrapper import screen, manager, ToggledPanel
 from FrontendCode.helpers import SCREEN_H, SCREEN_W
 from FrontendCode.techTree import TechTreeHandler
+from FrontendCode.infoPanel import InfoPanel
 
 class GUIhandler:
     def __init__(self, gameHandler: Backend, techTree):
@@ -104,7 +105,7 @@ class GUIhandler:
         )
 
         self._create_settings_panel()
-        self._create_info_panel()
+        self.info_panel = InfoPanel(manager)
 
     def _create_settings_panel(self):
         panel_width = 400
@@ -134,70 +135,6 @@ class GUIhandler:
             container=self.settings_panel.panel,
         )
 
-    def _create_info_panel(self):
-        panel_width = 350
-        panel_height = 400
-        self.info_panel = ToggledPanel(pygame_gui.elements.UIPanel(
-            relative_rect=pygame.Rect(
-                (SCREEN_W - panel_width) // 2,
-                (SCREEN_H - panel_height) // 2,
-                panel_width,
-                panel_height
-            ),
-            manager=manager
-        ))
-        self.info_panel.hide()
-
-        pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((10, 10), (330, 30)),
-            text="placeholder text",
-            manager=manager,
-            container=self.info_panel.panel,
-        )
-
-        self.launches_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((10, 60), (330, 25)),
-            text="placeholder text",
-            manager=manager,
-            container=self.info_panel.panel,
-        )
-
-        self.success_rate_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((10, 90), (330, 25)),
-            text="placeholder text",
-            manager=manager,
-            container=self.info_panel.panel,
-        )
-
-        self.payload_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((10, 120), (330, 25)),
-            text="placeholder text",
-            manager=manager,
-            container=self.info_panel.panel,
-        )
-
-        self.vab_level_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((10, 150), (330, 25)),
-            text="placeholder text",
-            manager=manager,
-            container=self.info_panel.panel,
-        )
-
-        button_width = 200
-        self.buy_launchpad_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(((panel_width - button_width) // 2, 200), (button_width, 50)),
-            text="Buy New Launchpad",
-            manager=manager,
-            container=self.info_panel.panel,
-        )
-
-        self.upgrade_vab_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(((panel_width - button_width) // 2, 270), (button_width, 50)),
-            text="Upgrade VAB",
-            manager=manager,
-            container=self.info_panel.panel,
-        )
-
     def _cycle_payload(self):
         payload_types = ["COMMERCIAL", "SCIENTIFIC", "SPACESHIP"]
         current_index = payload_types.index(self.selectedPayload)
@@ -206,20 +143,6 @@ class GUIhandler:
 
     def _prepare_payload(self, gameHandler: Backend):
         gameHandler.payloadFuncs[self.selectedPayload]()
-
-    def _update_info_panel(self, gameHandler: Backend):
-        try:
-            stats = gameHandler.getWorldStats()
-            self.launches_label.set_text(f"Launches: {stats.get('launches', 0)}")
-            self.success_rate_label.set_text(
-                f"Success Rate: {stats.get('success_rate', 0)}%"
-            )
-            self.payload_label.set_text(
-                f"Total Payload: {stats.get('total_payload', 0)} kg"
-            )
-            self.vab_level_label.set_text(f"VAB Level: {stats.get('vab_level', 1)}")
-        except (AttributeError, KeyError):
-            pass
 
     def _update_money_display(self, gameHandler: Backend):
         try:
