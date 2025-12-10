@@ -3,10 +3,6 @@ from time import time
 from BackendCode.backendInterface import StopGame, getTechTree, Backend
 
 from FrontendCode.GUIhandlerClass import GUIhandler
-import FrontendCode.helpers as helpers
-
-# note for future us: this was 849 lines at one point, now mostly split between techTree.py, GUIhandlerClass.py and techTree.json
-# I can not comprehend how Saahil wrapped his head around that. -Max
 
 # Doesn't crash, but on my laptop it raises LOADS of UserWarnings and shows nothing (possibly offscreen), probably due to some resolution limitations. Please fix if possible
 

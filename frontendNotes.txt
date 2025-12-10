@@ -1,4 +1,4 @@
-note to Saahil - Maybe draw tech tree on a sort of grid? It matches my idea of the tech tree better. -Max
+to Saahil - Maybe draw tech tree on a sort of grid? It matches my idea of the tech tree better. -Max
 
 The tree divisions are hardcoded, but whatever
 30 techs, 3 trees (2 large, 1 small)
@@ -10,6 +10,8 @@ The tree divisions are hardcoded, but whatever
 Positions are [x, y] in pixels from tree origin
 Trees branch OUT (end with multiple techs, not converge to 1)
 
+runGame.py was 849 lines at one point, now mostly split between techTree.py, GUIhandlerClass.py and techTree.json
+I can not comprehend how Saahil wrapped his head around a 1000 line module. -Max
 
 things we need:
 
