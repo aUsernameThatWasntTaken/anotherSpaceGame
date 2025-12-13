@@ -243,3 +243,27 @@ class TechTreeHandler:
                 text_surface = font.render(text, True, (255, 255, 255))
                 screen.blit(text_surface, (tooltip_x + padding, y_offset))
             y_offset += line_height
+
+    def handlePan(self, event):
+            if self.visible:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:  # Left click to pan
+                        self.is_panning = True
+                        self.pan_start_pos = pygame.mouse.get_pos()
+                    elif event.button == 2:  # Middle click also pans
+                        self.is_panning = True
+                        self.pan_start_pos = pygame.mouse.get_pos()
+
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if event.button == 1 or event.button == 2:
+                        self.is_panning = False
+
+                elif event.type == pygame.MOUSEMOTION:
+                    if self.is_panning:
+                        mouse_pos = pygame.mouse.get_pos()
+                        dx = mouse_pos[0] - self.pan_start_pos[0]
+                        dy = mouse_pos[1] - self.pan_start_pos[1]
+                        self.pan_offset_x += dx
+                        self.pan_offset_y += dy
+                        self.pan_start_pos = mouse_pos
+                        self.techTreeHandler._update_tech_tree_positions()
